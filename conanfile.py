@@ -5,11 +5,11 @@ from conans import ConanFile, CMake, tools
 import os
 
 
-class LibnameConan(ConanFile):
-    name = "libname"
-    version = "0.0.0"
-    url = "https://github.com/bincrafters/conan-libname"
-    description = "Keep it short"
+class OptionalLiteConan(ConanFile):
+    name = "optional-lite"
+    version = "2.3.0"
+    url = "https://github.com/bincrafters/conan-optional-lite"
+    description = "A single-file header-only version of a C++17-like optional, a nullable object for C++98, C++11 and later"
 
     # Indicates License type of the packaged library
     license = "MIT"
@@ -23,21 +23,15 @@ class LibnameConan(ConanFile):
 
     # Options may need to change depending on the packaged library.
     settings = "os", "arch", "compiler", "build_type"
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
+    options = {"build_tests": [True, False]}
+    default_options = "build_tests=True"
 
     # Custom attributes for Bincrafters recipe conventions
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
 
-    # Use version ranges for dependencies unless there's a reason not to
-    requires = (
-        "OpenSSL/[>=1.0.2l]@conan/stable",
-        "zlib/[>=1.2.11]@conan/stable"
-    )
-
     def source(self):
-        source_url = "https://github.com/libauthor/libname"
+        source_url = "https://github.com/martinmoene/optional-lite"
         tools.get("{0}/archive/v{1}.tar.gz".format(source_url, self.version))
         extracted_dir = self.name + "-" + self.version
 
@@ -47,23 +41,18 @@ class LibnameConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["BUILD_TESTS"] = False # example
+        cmake.definitions["BUILD_TESTS"] = self.options.build_tests
         cmake.configure(build_folder=self.build_subfolder)
         cmake.build()
-        cmake.install()
+        if self.options.build_tests:
+            path_to_test_exe = os.path.join(self.build_subfolder, 'bin', 'optional-lite.t')
+            self.run(path_to_test_exe)
 
     def package(self):
-        # If the CMakeLists.txt has a proper install method, the steps below may be redundant
-        # If so, you can replace all the steps below with the word "pass"
         include_folder = os.path.join(self.source_subfolder, "include")
         self.copy(pattern="LICENSE", dst="license", src=self.source_subfolder)
         self.copy(pattern="*", dst="include", src=include_folder)
-        self.copy(pattern="*.dll", dst="bin", keep_path=False)
-        self.copy(pattern="*.lib", dst="lib", keep_path=False)
-        self.copy(pattern="*.a", dst="lib", keep_path=False)
-        self.copy(pattern="*.so*", dst="lib", keep_path=False)
-        self.copy(pattern="*.dylib", dst="lib", keep_path=False)
-
+        # It's header only
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
