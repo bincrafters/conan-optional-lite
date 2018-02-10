@@ -11,22 +11,14 @@ class OptionalLiteConan(ConanFile):
     url = "https://github.com/bincrafters/conan-optional-lite"
     description = "A single-file header-only version of a C++17-like optional, a nullable object for C++98, C++11 and later"
 
-    # Indicates License type of the packaged library
     license = "MIT"
-
-    # Packages the license for the conanfile.py
     exports = ["LICENSE.md"]
-
-    # Remove following lines if the target lib does not use cmake.
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
-
-    # Options may need to change depending on the packaged library.
     settings = "os", "arch", "compiler", "build_type"
     options = {"build_tests": [True, False]}
     default_options = "build_tests=True"
 
-    # Custom attributes for Bincrafters recipe conventions
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
 
@@ -34,8 +26,6 @@ class OptionalLiteConan(ConanFile):
         source_url = "https://github.com/martinmoene/optional-lite"
         tools.get("{0}/archive/v{1}.tar.gz".format(source_url, self.version))
         extracted_dir = self.name + "-" + self.version
-
-        #Rename to "source_subfolder" is a convention to simplify later steps
         os.rename(extracted_dir, self.source_subfolder)
 
 
@@ -52,7 +42,7 @@ class OptionalLiteConan(ConanFile):
         include_folder = os.path.join(self.source_subfolder, "include")
         self.copy(pattern="LICENSE", dst="license", src=self.source_subfolder)
         self.copy(pattern="*", dst="include", src=include_folder)
-        # It's header only
 
-    def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+
+    def package_id(self):
+        self.info.header_only()
