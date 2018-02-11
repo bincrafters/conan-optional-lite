@@ -1,8 +1,8 @@
 ## Package Status
 
-| Bintray | Windows | Linux | OSX |
-|---------|------------|--------|------|
-|[![Download](https://api.bintray.com/packages/bincrafters/conan-packages/optional-lite%3Abincrafters/images/download.svg)](https://bintray.com/bincrafters/conan-packages/optional-lite%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/xtjukal5b3fmw17t/branch/stable/2.3.0?svg=true)](https://ci.appveyor.com/project/bincrafters/conan-optional-lite/branch/stable/2.3.0)|[![Build Status](https://travis-ci.org/bincrafters/conan-optional-lite.svg?branch=stable%2F2.3.0)](https://travis-ci.org/bincrafters/conan-optional-lite)||
+| Bintray | Windows | Linux & macOS | 
+|:--------:|:---------:|:-----------------:|
+|[![Download](https://api.bintray.com/packages/bincrafters/conan-packages/optional-lite%3Abincrafters/images/download.svg)](https://bintray.com/bincrafters/conan-packages/optional-lite%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-optional-lite?svg=true)](https://ci.appveyor.com/project/bincrafters/conan-optional-lite)|[![Build Status](https://travis-ci.org/bincrafters/conan-optional-lite.svg)](https://travis-ci.org/bincrafters/conan-optional-lite)||
 
 ## Conan.io Information
 
