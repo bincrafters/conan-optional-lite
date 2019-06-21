@@ -7,7 +7,7 @@ import os
 
 class OptionalLiteConan(ConanFile):
     name = "optional-lite"
-    version = "2.3.0"
+    version = "3.2.0"
     url = "https://github.com/bincrafters/conan-optional-lite"
     homepage = "https://github.com/martinmoene/optional-lite"
     description = "A single-file header-only version of a C++17-like optional, a nullable object for C++98, C++11 and later"
@@ -18,8 +18,8 @@ class OptionalLiteConan(ConanFile):
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
-    options = {"build_tests": [True, False]}
-    default_options = {'build_tests': 'True'}
+    options = {"build_tests": [True, False], "build_examples": [True, False]}
+    default_options = {'build_tests': False, 'build_examples': False}
     topics = ("conan", "optional")
 
     _source_subfolder = "source_subfolder"
@@ -27,14 +27,15 @@ class OptionalLiteConan(ConanFile):
 
     def source(self):
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version),
-                  sha256="8fe46216147234b172c6a5b182726834afc44dfdca1e976a264d6f96eb183916")
+                  sha256="069c92f6404878588be761d609b917a111b0231633a91f7f908288fc77eb24c8")
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
 
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["BUILD_TESTS"] = self.options.build_tests
+        cmake.definitions["OPTIONAL_LITE_OPT_BUILD_TESTS"] = self.options.build_tests
+        cmake.definitions["OPTIONAL_LITE_OPT_BUILD_EXAMPLES"] = self.options.build_tests
         cmake.configure(build_folder=self._build_subfolder)
         cmake.build()
         if self.options.build_tests:
